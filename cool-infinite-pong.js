@@ -60,7 +60,6 @@ function setup() {
     }
     CELLS.push(row);
   }
-  console.log(CELLS);
   fpsInterval = 1000 / FPS;
   then = window.performance.now();
   start = then;
