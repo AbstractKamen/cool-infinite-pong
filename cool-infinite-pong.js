@@ -139,7 +139,7 @@ function oppositePlayerPongCollision(player) {
   let dx = thePong.x - oppositePong.x;
   let dy = thePong.y - oppositePong.y;
   let distanceSquared = dx * dx + dy * dy;
-  let minDistance = thePong.r + oppositePong.r + CELL_SIZE; // need this extra distance so they don't get stuck
+  let minDistance = thePong.r + oppositePong.r + CELL_SIZE + 0.2 * CELL_SIZE; // need this extra distance so they don't get stuck
 
   // Check if the pongs are colliding
   if (distanceSquared < minDistance * minDistance) {
