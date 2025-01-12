@@ -6,8 +6,8 @@ const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
 const CELL_SIZE = 10
 const CELLS = [];
-const FPS = 40;
-const PONG_RADIUS = 60;
+const FPS = 60;
+const PONG_RADIUS = 30;
 const PONG_VELOCITY = 0.3;
 
 // RUNTIME
