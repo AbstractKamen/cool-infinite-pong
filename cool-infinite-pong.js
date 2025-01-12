@@ -4,7 +4,7 @@ window.onload = setup;
 // CONST
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
-const CELL_SIZE = 5;
+const CELL_SIZE = 6;
 const CELLS = [];
 const FPS = 60;
 const PONG_RADIUS = 60;
