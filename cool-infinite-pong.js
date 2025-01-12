@@ -4,11 +4,11 @@ window.onload = setup;
 // CONST
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
-const CELL_SIZE = 40;
+const CELL_SIZE = 10;
 const CELLS = [];
 const FPS = 60;
-const PONG_RADIUS = 20.0;
-const PONG_VELOCITY = 0.2;
+const PONG_RADIUS = 25;
+const PONG_VELOCITY = 0.5;
 
 // RUNTIME
 var pongCanvas;
@@ -90,21 +90,22 @@ function updatePlayer(player) {
 
   let newX = thePong.x + thePong.xv * deltaTime;
   let newY = thePong.y + thePong.yv * deltaTime;
-
-  if (newX - r < 0 || newX + r >= WIDTH || oppositePlayerCollission(player)) {
+  if (newX - r < 0 || newX + r >= WIDTH || oppositePlayerCellCollission(player)) {
     thePong.xv *= -1;
   } else {
     thePong.x = newX;
   }
 
-  if (newY - r < 0 || newY + r >= HEIGHT || oppositePlayerCollission(player)) {
+  if (newY - r < 0 || newY + r >= HEIGHT || oppositePlayerCellCollission(player)) {
     thePong.yv *= -1;
   } else {
     thePong.y = newY;
   }
+
+  oppositePlayerPongCollision(player);
 }
 
-function oppositePlayerCollission(player) {
+function oppositePlayerCellCollission(player) {
   let thePong = player.pong;
   let r = thePong.r;
   let pongX = thePong.x;
@@ -129,7 +130,48 @@ function oppositePlayerCollission(player) {
   return false;
 }
 
-// www.twitch.tv/Tsoding
+// thanks mr gpt for vector stuff
+function oppositePlayerPongCollision(player) {
+  let thePong = player.pong;
+  let oppositePong = player === player1 ? player2.pong : player1.pong;
+
+  // Vector between the two pongs
+  let dx = thePong.x - oppositePong.x;
+  let dy = thePong.y - oppositePong.y;
+  let distanceSquared = dx * dx + dy * dy;
+  let minDistance = thePong.r + oppositePong.r + CELL_SIZE; // need this extra distance so they don't get stuck
+
+  // Check if the pongs are colliding
+  if (distanceSquared < minDistance * minDistance) {
+    let distance = Math.sqrt(distanceSquared) || 1; // Prevent division by zero
+    let overlap = minDistance - distance;
+
+    // Normalize collision vector
+    let nx = dx / distance;
+    let ny = dy / distance;
+
+    // Separate the pongs equally based on their overlap
+    thePong.x += nx * (overlap / 2);
+    thePong.y += ny * (overlap / 2);
+    oppositePong.x -= nx * (overlap / 2);
+    oppositePong.y -= ny * (overlap / 2);
+
+    // Reflect velocities along the collision vector
+    let dotProduct1 = thePong.xv * nx + thePong.yv * ny;
+    let dotProduct2 = oppositePong.xv * nx + oppositePong.yv * ny;
+
+    thePong.xv -= 2 * dotProduct1 * nx;
+    thePong.yv -= 2 * dotProduct1 * ny;
+
+    oppositePong.xv -= 2 * dotProduct2 * nx;
+    oppositePong.yv -= 2 * dotProduct2 * ny;
+  }
+}
+
+
+
+
+// www.twitch.tv/tsoding god tier programmer
 function mrTsoding_rectCircleCollision(left, right, top, bottom, circleX, circleY, radius) {
   let x = Math.min(Math.max(left, circleX), right);
   let y = Math.min(Math.max(top, circleY), bottom);
@@ -150,7 +192,7 @@ function draw() {
   drawPlayer(player1);
   drawPlayer(player2);
   ctx.fillStyle = "black";
-  ctx.fillText("Cool Infinite Pong v0.0.1",10, 80);
+  ctx.fillText("Cool Infinite Pong v0.0.1", 10, 80);
 }
 
 function drawPlayer(player) {
