@@ -8,7 +8,7 @@ const CELL_SIZE = 10;
 const CELLS = [];
 const FPS = 60;
 const PONG_RADIUS = 25;
-const PONG_VELOCITY = 0.5;
+const PONG_VELOCITY = 0.3;
 
 // RUNTIME
 var pongCanvas;
