@@ -7,10 +7,10 @@ const HEIGHT = window.innerHeight;
 const CELL_SIZE = 10;
 const CELLS = [];
 const FPS = 60;
-const PONG_RADIUS = 60;
 const PONG_VELOCITY = 0.3;
 const GRID_CENTER = { x: WIDTH / 2, y: HEIGHT / 2 };
-const GRID_RADIUS = Math.min(WIDTH, HEIGHT) / 2 - PONG_RADIUS;
+const GRID_RADIUS = Math.min(WIDTH, HEIGHT) / 2 * 0.85;
+const PONG_RADIUS = Math.min(WIDTH, HEIGHT) / 2 * 0.15;
 const STUCK_SECONDS_LIMIT = 2;
 
 // RUNTIME
